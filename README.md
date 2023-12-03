@@ -121,7 +121,7 @@ to `baseURL: 'http://<your backend server ip>:3000'`
 `npm run build`
 
 ### Copy output files to web folder
-`cp -r build/* /var/www/html/`
+`sudo cp -r build/* /var/www/html/`
 
 ### Check result
 Access to ALB DNS address you can see react js page
