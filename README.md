@@ -1,3 +1,93 @@
+# AWS deployment
+
+### Connect Web server with Bastion Host
+Connect Bastion Host from your computer
+```
+ssh -i ~/.ssh/your-key-pair.pem ec2-user@your-instance-bastion-host-ip
+```
+
+Connect Web server with your Bastion Host
+```
+ssh -i ~/.ssh/your-key-pair.pem ec2-user@your-instance-web-server-ip
+```
+
+### Configure the EC2 instance
+```
+sudo yum update
+```
+
+### Install Node.js and npm
+```
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+```
+
+### Activate nvm
+```
+. ~/.nvm/nvm.sh
+```
+
+### Install node 16
+```
+nvm install 16
+```
+
+### Check versions
+```
+node -v
+npm -v
+```
+
+Note: Amazon linux 2 supports node 16 and below
+
+###  Install git
+```
+sudo yum install git
+```
+
+### Create ssh key used on Github
+```
+nano ~/.ssh/id_rsa
+```
+Copy your deployer private ssh key and save exit.
+
+```
+chmod 600 ~/.ssh/id_rsa
+```
+Change permission of private ssh key
+
+### Clone your project
+```
+git clone <repository-url>
+```
+
+### Install project dependencies
+```
+cd <repository>
+npm install
+```
+
+### Change application URL
+```
+nano src/App.js
+```
+
+Change below to your backend server ip  
+from `baseURL: 'http://localhost:3000'`  
+to `baseURL: 'http://<your backend server ip>:3000'` 
+
+### Build app for deploy
+```
+npm run build
+```
+
+### Copy output files to web folder
+```
+sudo cp -r build/* /var/www/html/
+```
+
+### Check result
+Access to ALB DNS address you can see react js page
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
@@ -68,60 +158,3 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-
-# AWS deployment
-
-### Connect Web server with Bastion Host
-Connect Bastion Host from your computer
-`ssh -i ~/.ssh/your-key-pair.pem ec2-user@your-instance-bastion-host-ip`
-
-Connect Web server with your Bastion Host
-`ssh -i ~/.ssh/your-key-pair.pem ec2-user@your-instance-web-server-ip`
-
-### Configure the EC2 instance
-`sudo yum update`
-
-### Install Node.js and npm
-`curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash`
-
-### Activate nvm
-`. ~/.nvm/nvm.sh`
-
-### Install node 16
-`nvm install 16`
-
-### Check versions
-`node -v`
-`npm -v`
-
-Note: Amazon linux 2 supports node 16 and below
-
-###  Install git
-`sudo yum install git`
-
-### Create ssh key used on Github
-`nano ~/.ssh/id_rsa`
-Copy your deployer private ssh key and save exit.
-
-### Clone your project
-`git clone <repository-url>`
-
-### Install project dependencies
-`cd <repository>`
-`npm install`
-
-### Change application URL
-`nano src/App.js`
-
-Change below to your backend server ip
-from `baseURL: 'http://localhost:3000'`
-to `baseURL: 'http://<your backend server ip>:3000'` 
-
-### Build app for deploy
-`npm run build`
-
-### Copy output files to web folder
-`sudo cp -r build/* /var/www/html/`
-
-### Check result
-Access to ALB DNS address you can see react js page
